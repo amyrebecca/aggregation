@@ -5,6 +5,9 @@ from csv_output import CsvOut
 
 
 def aggregate(project_id, token, href, metadata, environment):
+    aggregate_project_worker(project_id, token, href, metadata, environment)
+
+def aggregate_project_worker(project_id, token, href, metadata, environment):
     from aggregation_api import AggregationAPI
 
     # Hard-coded projects which can't be exported on demand
@@ -24,6 +27,9 @@ def aggregate(project_id, token, href, metadata, environment):
                 requests.put(url, headers={'Content-Type': 'application/x-gzip'}, data=tarball)
             os.remove(tarpath)
             send_finished(metadata, token, href)
+
+def aggregate_subject_worker(subject_id, workflow_id, project_id, token, href, metadata, environment):
+    return
 
 def get_etag(href, token):
     response = requests.get(href, headers=headers(token), params={'admin': True})

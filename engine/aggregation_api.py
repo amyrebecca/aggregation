@@ -833,10 +833,6 @@ class AggregationAPI:
 
         return metadata
 
-
-
-
-
     def __get_workflow_instructions__(self,task_dict):
         # read in the instructions associated with the workflow
         # not used for the actual aggregation but for printing out results to the user
@@ -1402,7 +1398,6 @@ class AggregationAPI:
             except (urllib2.HTTPError,urllib2.URLError) as e:
                 print("trying to connect/init again again")
                 pass
-
 
     def __plot_image__(self,subject_id,axes):
         # TODO - still learning about Matplotlib and axes
