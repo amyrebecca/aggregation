@@ -29,7 +29,20 @@ def aggregate_project_worker(project_id, token, href, metadata, environment):
             send_finished(metadata, token, href)
 
 def aggregate_subject_worker(subject_id, workflow_id, project_id, token, href, metadata, environment):
-    return
+    from aggregation_api import AggregationAPI
+
+    with AggregationAPI(project_id, environment=environment) as project:
+        project.__setup__()
+        project.__aggregate__(workflow_id, [subject_id])
+
+        with CsvOut(project) as writer:
+            tarpath = writer.__write_out__()
+            response = send_uploading(metadata, token, href)
+            url = response.json()["media"][0]["src"]
+            with open(tarpath, 'rb') as tarball:
+                requests.put(url, headers={'Content-Type': 'application/x-gzip'}, data=tarball)
+            os.remove(tarpath)
+            send_finished(metadata, token, href)
 
 def get_etag(href, token):
     response = requests.get(href, headers=headers(token), params={'admin': True})

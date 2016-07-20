@@ -310,7 +310,7 @@ class AggregationAPI:
                 else:
                     subject_set = migrated_subjects
             else:
-                # self.__migrate__(workflow_id,version)
+                self.__migrate__(workflow_id,version, given_subject_ids)
                 subject_set = given_subject_ids
                 previously_aggregated = subject_set
 
